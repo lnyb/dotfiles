@@ -1,0 +1,31 @@
+#!/bin/sh
+#=========
+# Little script to generate an oomox theme
+
+#if (( "$1" == "" )); then 
+#	echo "theme name unspecified." 
+#	exit 0 
+#fi
+
+colorPath="/home/chester/.cache/wal/colors-oomox"
+executableArc="/home/chester/.local/lib/oomox/plugins/theme_arc/arc-theme/change_color.sh"
+executableIcons="/home/chester/.local/lib/oomox/plugins/icons_papirus/change_color.sh"
+
+echo "generating Theme ======"
+# generate arc theme
+${executableArc} -o $1 -a '--disable-cinnamon --disable-gnome-shell' $colorPath 
+
+echo "generating Icons ======"
+# generate icon theme
+${executableIcons} -o $1 $colorPath
+
+gtksettingsfile="/home/chester/.config/gtk-3.0/settings.ini"
+temp="/tmp/gtksettingstmp.ini"
+
+# apply new theme
+sed s/gtk-theme-name=.*/gtk-theme-name=$1/ <$gtksettingsfile > $temp &&
+	cat $temp > $gtksettingsfile 
+sed s/gtk-icon-theme-name=.*/gtk-icon-theme-name=$1/ <$gtksettingsfile > $temp &&
+	cat $temp > $gtksettingsfile
+
+exit 0

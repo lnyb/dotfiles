@@ -1,0 +1,14 @@
+#!/bin/bash 
+
+# Script to manage powering off and rebooting
+
+selCommand=$(echo "logout
+reboot
+poweroff" | rofi -dmenu -config ~/.config/rofi/powermenuconfig.rasi -p "powermenu" -yoffset 0 -xoffset 0 )
+
+case $selCommand in
+	logout) pkill bspwm;;
+	*) loginctl $selCommand;;
+esac
+
+exit 0 

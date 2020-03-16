@@ -1,0 +1,16 @@
+#!/bin/bash
+
+currbgdir=${HOME}/Pictures/bg/.curr 
+
+if [[ ! -e $1 ]]; then 
+	echo "File $1 does not exist." | cowsay -f stegosaurus.cow; exit 1
+fi
+
+rm $currbgdir/*
+cp $1 $currbgdir/
+
+feh --no-fehbg --bg-fill $1
+wal -ni $1 -a 95
+generate-oomox current
+
+exit 0 
